@@ -9,13 +9,18 @@
 // consider this  si oop
 // the redct is the class and under the class there callback function
 // function name  will be the key and the arrow function will be value
-var rect = {
+//var rect = {
     // two farrow function to calculate the 
     //peremeter and the area
-    peremeter :(x,y)=>{return 2*(x+y)},
-    area : (x,y)=>{return x*y}
+    //peremeter :(x,y)=>{return 2*(x+y)},
+    //area : (x,y)=>{return x*y}
+    
 
-};
+//};
+var rect = require('./rectangle');
+// and we will get the same result
+// it just impoert the code
+// like trait in php
 
 
 function solveRect(l,b){
