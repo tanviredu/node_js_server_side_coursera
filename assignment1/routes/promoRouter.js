@@ -1,17 +1,11 @@
-// this dishrouter.js will hold all the route
-// this is actually a mini app just like every node module
+
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const promorouter = express.Router(); // this will be the express router
-
+const promorouter = express.Router(); 
 
 promorouter.use(bodyParser.json());
 
-// this will be a all total dish router file
-// we no longet need the dishes
-//cause we will mount the total url
-// on top of the '/dishes'
 
 promorouter.route('/')
 .all((req,res,next)=>{
@@ -28,10 +22,9 @@ promorouter.route('/')
 
 
 .post((req,res,next)=>{
-    //we will fetch data in this post request
-    //but for now we just send and text
+
     res.end("will add the promotions " +req.body.name + " with details "+req.body.description);
-    // we wills end it with postman
+
 })
 
 .put((req,res,next)=>{
@@ -74,8 +67,8 @@ promorouter.route('/:promoID')
 
 .put((req,res,next)=>{
     
-    res.statusCode = 403;// not supported
-    res.end("not supported");
+    res.write("updating the dishes....")
+    res.end("will update the dish "+req.params.promoID + "with details "+req.body.description);
 })
 .delete((req,res,next)=>{
     res.end("Delete all the "+req.params.promoID+" Promotion");

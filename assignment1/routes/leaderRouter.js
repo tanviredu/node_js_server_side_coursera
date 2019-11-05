@@ -66,9 +66,8 @@ leaderrouter.route('/:leaderID')
 })
 
 .put((req,res,next)=>{
-    
-    res.statusCode = 403;// not supported
-    res.end("not supported");
+    res.write("updating the Leaders....")
+    res.end("will update the dish "+req.params.leaderID + "with details "+req.body.description);
 })
 .delete((req,res,next)=>{
     res.end("remove all the "+req.params.leaderID+" Leaders");

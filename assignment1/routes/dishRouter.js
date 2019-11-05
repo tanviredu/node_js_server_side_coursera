@@ -35,8 +35,8 @@ dishrouter.route('/:dishID')
 
 .put((req,res,next)=>{
     
-    res.statusCode = 403;// not supported
-    res.end("not supported");
+    res.write("updating the dishes....")
+    res.end("will update the dish "+req.params.dishID + "with details "+req.body.description);
 })
 .delete((req,res,next)=>{
     res.end("Delete all the "+req.params.dishID+" dishes");
