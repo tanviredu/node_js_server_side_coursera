@@ -2,11 +2,18 @@ const express = require('express');
 const http = require('http');
 const bodyparser = require('body-parser');
 
+
+const dishrouter = require('./routes/dishrouter');
+
+//diclare the path
 const hostname = "localhost";
 const port = 3000;
 
 const app = express()
 app.use(bodyparser.json());
+
+app.use('/dishes',dishrouter);
+// so we mount it on top of the dishes url just like django url
 
 //----this is where we start CRUD api
 app.use(bodyparser.json());
