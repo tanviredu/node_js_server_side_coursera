@@ -22,43 +22,43 @@ app.use(express.static(__dirname+'/public'));
 
 //-----------------API GOES HERE --------------------------------
 
-app.all('/dishes',(req,res,next)=>{
-    // this is like a constructor
-    // no matther what method uou are using
-    //create,read,write,delete,update this
-    //code will apply first by default
-    res.statusCode = 200;
-    res.setHeader('Content-Type','text/plain')
-    //we cend text in return cause this is api
-    // this two will be executed here and after that
-    // all the other method will be executed
-    //we have to use this command
-    next(); //this will seach additional operation for thsi endpoint
+// app.all('/dishes',(req,res,next)=>{
+//     // this is like a constructor
+//     // no matther what method uou are using
+//     //create,read,write,delete,update this
+//     //code will apply first by default
+//     res.statusCode = 200;
+//     res.setHeader('Content-Type','text/plain')
+//     //we cend text in return cause this is api
+//     // this two will be executed here and after that
+//     // all the other method will be executed
+//     //we have to use this command
+//     next(); //this will seach additional operation for thsi endpoint
 
 
-});
+// });
 
-app.get('/dishes',(req,res,next)=>{
-    res.end("will send all the dishes to you");
-});
+// app.get('/dishes',(req,res,next)=>{
+//     res.end("will send all the dishes to you");
+// });
 
 
-app.post('/dishes',(req,res,next)=>{
-    //we will fetch data in this post request
-    //but for now we just send and text
-    res.end("will add the dishes " +req.body.name + "with details "+req.body.description);
-    // we wills end it with postman
-});
+// app.post('/dishes',(req,res,next)=>{
+//     //we will fetch data in this post request
+//     //but for now we just send and text
+//     res.end("will add the dishes " +req.body.name + "with details "+req.body.description);
+//     // we wills end it with postman
+// });
 
-app.put('/dishes',(req,res,next)=>{
+// app.put('/dishes',(req,res,next)=>{
     
-    res.statusCode = 403;// not supported
-    res.end("not supported");
-});
+//     res.statusCode = 403;// not supported
+//     res.end("not supported");
+// });
 
-app.delete('/dishes',(req,res,next)=>{
-    res.end("Delete all the dishes");
-});
+// app.delete('/dishes',(req,res,next)=>{
+//     res.end("Delete all the dishes");
+// });
 
 
 // now send the request with postman
