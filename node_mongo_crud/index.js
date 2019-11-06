@@ -53,4 +53,6 @@ MongoClient.connect(url,(err,client)=>{
 // in other programming language thats not necessary cause
 // they work one after another but the callback function dont
 // so you cant do it in a thread
+// but this is true that this type of code is problmatic
+// so we need to do something in the next
 //-------------------------------------------------
