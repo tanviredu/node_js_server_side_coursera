@@ -4,8 +4,15 @@ const app = express();
 require('dotenv/config')
 const postRoute = require('./routes/posts');
 const bodyParser = require('body-parser');
-
+const cors = require('cors');
 app.use(bodyParser.json());
+app.use(cors());
+
+// we import another module so it can be accessable through the internet
+
+
+
+
 
 // midleware
 // middle ware is something thats exectes
