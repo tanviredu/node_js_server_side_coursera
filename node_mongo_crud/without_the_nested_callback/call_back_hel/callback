@@ -1,0 +1,10 @@
+we know the calback program work in thread 
+to execute on after another we either have to use nested function
+
+but this makes the program extreamly difficult to read it is called callback hell problem
+
+or we use promises so one program wait untill other is finished
+
+
+this makes the program easy to read and execute 
+
