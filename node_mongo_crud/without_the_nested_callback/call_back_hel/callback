@@ -3,6 +3,8 @@ to execute on after another we either have to use nested function
 
 but this makes the program extreamly difficult to read it is called callback hell problem
 
+karon samner joto gula function execute hobe ekta arektar under e thakbe
+
 or we use promises so one program wait untill other is finished
 
 
