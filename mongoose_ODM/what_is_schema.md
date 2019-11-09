@@ -18,3 +18,20 @@ you can use multiple schema in include one schema under another schema
 after defining a schema which is actualy  a json undrer an array we will
 
 pass it ubder mongoose.model() function then it will create the schema in the mongodb database
+
+
+
+
+################## most important thing
+
+
+in this mongoose we make the table not the database now what will be the name of the database
+we say that the table name us 'dish' which schema we wrote
+so the database will be the pural 'dishes' by default in mongoose
+
+
+
+
+
+
+
