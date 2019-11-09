@@ -13,4 +13,8 @@ means schema under a schema
 then the dishes have some field this field may have some other subfiles 
 and alll the dish under the dishes will be this type
 
+you can use multiple schema in include one schema under another schema
 
+after defining a schema which is actualy  a json undrer an array we will
+
+pass it ubder mongoose.model() function then it will create the schema in the mongodb database
