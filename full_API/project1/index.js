@@ -3,11 +3,22 @@
 const express = require('express');
 const http = require('http');
 const bodyparser = require('body-parser');
+
+
+
+// custom app route
 const dishrouter = require('./routes/dishRouter');
 const promorouter = require('./routes/promoRouter');
 const leaderrouter = require('./routes/leaderRouter');
+const Dishes = require('./models/dishes');
 
+// database parameter
+const url = "mongodb://localhost:27107/confusion";
+const connect  = mongoose.connect(url);
 
+connect.then((db)=>{
+    console.log("Connected to the database");
+})
 //diclare the hostname and port
 const hostname = "localhost";
 const port = 3000;
