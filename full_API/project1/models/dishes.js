@@ -42,7 +42,7 @@ var dishSchema = new Schema({
     },
     category:{
         type:String,
-        required:true,
+        required:false,
     },
     label:{
         type:String,
@@ -50,7 +50,7 @@ var dishSchema = new Schema({
     },
     price:{
         type:Currency,
-        required:true,
+        required:false,
         min:0
     },
     fetured:{

@@ -3,7 +3,7 @@
 const express = require('express');
 const http = require('http');
 const bodyparser = require('body-parser');
-
+const mongoose = require('mongoose');
 
 
 // custom app route
@@ -13,7 +13,7 @@ const leaderrouter = require('./routes/leaderRouter');
 const Dishes = require('./models/dishes');
 
 // database parameter
-const url = "mongodb://localhost:27107/confusion";
+const url = "mongodb://localhost:27017/hello";
 const connect  = mongoose.connect(url);
 
 connect.then((db)=>{

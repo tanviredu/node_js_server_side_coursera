@@ -48,7 +48,7 @@ dishRouter.route('/')
     res.end('PUT operation is nnot supported on /Dishes');
 }).delete((req,res,next)=>{
     Dishes.remove({})
-    ,then((resp)=>{
+    .then((resp)=>{
         res.statusCode = 200;
         res.setHeader('Content-Type','application/json');
         res.json(resp);
@@ -64,7 +64,7 @@ dishRouter.route('/:dishId')
         res.json(dish);
     },(err)=>next(err)).catch((err)=>next(err));
 })
-.put((req,res,next)=>{
+.post((req,res,next)=>{
     res.setHeader = 403;
     res.end('PUT request is not supported');
 })
