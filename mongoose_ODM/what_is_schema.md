@@ -26,12 +26,18 @@ pass it ubder mongoose.model() function then it will create the schema in the mo
 
 
 in this mongoose we make the table not the database now what will be the name of the database
-we say that the table name us 'dish' which schema we wrote
-so the database will be the pural 'dishes' by default in mongoose
+we say that the data format name us 'dish' which schema we wrote
+so the table will be the pural 'dishes' by default in mongoose
 
 
+alll the data are stored as the dish and the table name will be dishes
+and the database name you have to specfy in the url
+when you start storing the data this database will created autometically
 
 
+you can use the mongodb driver method if you want to
+
+but it is not necessary cause mongoose has its own method
 
 
 
