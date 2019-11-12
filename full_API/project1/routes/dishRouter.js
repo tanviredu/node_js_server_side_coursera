@@ -64,6 +64,32 @@ dishRouter.route('/:dishId')
         res.json(dish);
     },(err)=>next(err)).catch((err)=>next(err));
 })
+.put((req,res,next)=>{
+    res.setHeader = 403;
+    res.end('PUT request is not supported');
+})
+.put((req,res,next)=>{
+    Dishes.findByIdAndUpdate(req.params.dishId,{
+        $set:req.body
+        // new:true will send the result afte update it 
+        // and we catch it by a function
+    },{new:true}).then((dish)=>{
+        res.statusCode = 200;
+        res.setHeader('Content-Type','application/json');
+        res.json(dish);
+
+    },(err)=>next(err)).catch((err)=>next(err));
+})
+.delete((req,res,next)=>{
+    Dishes.findByIdAndDelete(req.params.dishId)
+    .then((resp)=>{
+        res.statusCode = 200;
+        res.setHeader('Content-Type','application/json');
+        res.json(resp);
+    },(err)=>next(err)).catch((err)=>next(err));
+});
+
+module.exports = dishRouter;
 
 
 
