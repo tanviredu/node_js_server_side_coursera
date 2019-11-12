@@ -37,6 +37,9 @@ var dishSchema = new Schema({
         requird:true
     },
     // adding the comments here
+    // why we added the comment schema in a array
+    // beacause there can be multiple comments 
+    // in a  specfic item
     comments:[commentSchema]
 },{
     timestamps:true
