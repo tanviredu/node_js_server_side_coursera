@@ -170,6 +170,87 @@ dishRouter.route('/:dishId/comments') // fetch all the comments in a
         })  
 })
 
+dishRouter.route('/:dishId/comments/:commentId')
+.get((req,res,next)=>{
+    Dishes.findById(req.params.dishId)
+    .then((dish)=>{
+        if(dish!=null && dish.comments.id(req.params.commentId)!=null){
+            // if there is an dish and that dissh has a comment
+            // then get it
+            res.statusCode = 200;
+            res.setHeader('Content-type','application/json');
+            res.json(dish.comments.id(req.params.commentId));
+        }else if (dish = null){
+            err = new Error("Not found");
+            res.status = 404;
+            return next(err);
+            
+        }else{
+            err = new Error("Not found");
+            res.status = 404;
+            return next(err);
+        }
+
+    },(err)=>{
+        next(err);
+    }).catch((err)=>{
+        next(err);
+    })
+})
+
+.post((req,res,next0)=>{
+    res.statusCode = 403;
+    res.end('Not allowed');
+})
+.put((req,res,next)=>{
+    // find the dish first
+    Dishes.findById(req.params.dishId)
+    .then((dish)=>{
+        // there can be multiple options
+        if (dish != null && dish.comments.id(req.params.commentId) != null) {
+            if (req.body.rating) {
+                dish.comments.id(req.params.commentId).rating = req.body.rating;
+            }
+            if (req.body.comment) {
+                dish.comments.id(req.params.commentId).comment = req.body.comment;                
+            }
+            dish.save()
+            .then((dish) => {
+                res.statusCode = 200;
+                res.setHeader('Content-Type','application/json');
+                res.json(dish);
+            },(err)=>next(err));
+        } else if(dish==null){
+            res.end("not found");
+        }else{
+            res.end("Comment not found");
+        }
+    },(err)=>next(err)).catch((err)=>next(err));
+})
+.delete((req,res,next)=>{
+    Dishes.findById(req.params.dishId)
+    .then((dish)=>{
+        if(dish!=null && dish.comments.id(req.params.commentId)!=null){
+            dish.comments.id(req.params.commentId).remove();
+            dish.save()
+            .then((dish)=>{
+                res.statusCode = 200;
+                res.setHeader('Content-type','application/json');
+                res.json(dish);
+            },(err)=>next(err));
+        }else if(dish==null){
+            err = new Error('not found');
+            err.status = 404;
+            return next(err);
+        }else{
+            err = new Error("Not found");
+            err.status = 404;
+            return next(err);
+        }
+    },(err)=>next(err)).catch((err)=>next(err));
+})
+
+// operation for individual comment in a individual dish
 
 
 
