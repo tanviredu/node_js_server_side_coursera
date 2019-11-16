@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 
 
 
-var PromoSchema = new Schema({
+var LeaderSchema = new Schema({
     name:{
         type:String,
         required:true
@@ -17,12 +17,12 @@ var PromoSchema = new Schema({
         required:true
 
     },
-    label:{
+    designation:{
         type:String,
         default:''
 
     },
-    price:{
+    abbr:{
         type:Currency,
         required:false,
         min:0
@@ -40,5 +40,5 @@ var PromoSchema = new Schema({
 });
 
 
-var Promotions = mongoose.model('Promotion',PromoSchema);
-module.exports = Promotions;
+var Leaders = mongoose.model('Leader',LeaderSchema);
+module.exports = Leaders;

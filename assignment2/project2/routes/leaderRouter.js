@@ -1,79 +1,104 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-
 const leaderrouter = express.Router(); 
-
 leaderrouter.use(bodyParser.json());
+const Leaders = require('../models/leaders');
 
 
 leaderrouter.route('/')
-.all((req,res,next)=>{
-    res.statusCode = 200;
-    res.setHeader('Content-Type','text/plain')
-    next();
-
-
-})
-
 .get((req,res,next)=>{
-    res.end("will send all the leader to you");
+    Leaders.find({})
+    .then((leaders)=>{
+        res.statusCode =200;
+        res.setHeader('Content-Type','application/json');
+        res.json(leaders);
+        // sending the leaders
+    },(err)=>{
+        next(err)
+    }).catch((err)=>{
+        next(err);
+    })
 })
 
-
+// this is all the get method for leaders
 .post((req,res,next)=>{
-
-    res.end("will add the leader " +req.body.name + " with details "+req.body.description);
-
+    Leaders.create(req.body)
+    .then((leader)=>{
+        console.log("Leader is made",leader);
+        res.statusCode200;
+        res.setHeader('Content-Type','applications/json');
+        //sending the result to configrm
+        res.json(leader);
+    },(err)=>{
+        next(err)
+    }).catch((err)=>{
+        next(err);
+    })
 })
-
 .put((req,res,next)=>{
-    
-    res.statusCode = 403;// not supported
-    res.end("not supported for /leaders");
+    res.statusCode = 403;
+    res.end("PUT operation is not supported");
 })
 .delete((req,res,next)=>{
-    res.end("Remove all the leaders");
+    Leaders.remove({})
+    .then((resp)=>{
+        res.statusCode = 200;
+        res.setHeader('Content-Type','application/json');
+        res.json(resp);
+    },(err)=>{
+        next(err);
+    }).catch((err)=>{
+        next(err);
+    });
 });
+/// 
 
-
-
-
-
-// with parameter
-
-
-
-leaderrouter.route('/:leaderID')
-.all((req,res,next)=>{
-    res.statusCode = 200;
-    res.setHeader('Content-Type','text/plain')
-    next();
-
-
-})
-
+leaderrouter.route('/:leaderId')
 .get((req,res,next)=>{
-    res.end("will send all the leaders to you " +req.params.leaderID + " to you ");
+    // first find the if the leaders exist
+    Leaders.findById(req.params.leaderId)
+    .then((leader)=>{
+        res.statusCode = 200;
+        res.setHeader('Content-Type','application/json');
+        res.json(leader);
+    },(err)=>{
+        next(err);
+    }).catch((err)=>{
+        next(err);
+    })
 })
-
-
 .post((req,res,next)=>{
-    //we will fetch data in this post request
-    //but for now we just send and text
-    res.end("will add the leaders " +req.body.name + " with details "+req.body.description);
-    // we wills end it with postman
+    res.statusCode = 403;
+    res.end("POST operation is not supported");
 })
-
 .put((req,res,next)=>{
-    res.write("updating the Leaders....")
-    res.end("will update the dish "+req.params.leaderID + "with details "+req.body.description);
+    //first find if there is a leaders
+    Leaders.findByIdAndUpdate(req.params.leaderId,{
+        $set:req.body
+    },{new:true}).then((leader)=>{
+        res.statusCode=200;
+        res.setHeader('Content-Type','application/json');
+        res.json(leader);
+    },(err)=>{
+        next(err);
+    }).catch((err)=>{
+        next(err);
+    })
 })
 .delete((req,res,next)=>{
-    res.end("remove all the "+req.params.leaderID+" Leaders");
-});
+    Leaders.findByIdAndDelete(req.params.leaderId)
+    .then((resp)=>{
+        res.statusCode = 200;
+        res.setHeader('Content-Type','appliation/json');
+        res.json(resp);
 
-
+    },(err)=>{
+        next(err);
+    }).catch((err)=>{
+        next(err);
+    })
+})
 
 
 
