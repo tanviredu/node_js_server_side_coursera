@@ -43,65 +43,80 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var session  = require('express-session');
+var FileStore = require('session-file-store')(session);
 
-// we make a middleware here so before it goes to the 
-// url it has to pass whe middleware
-// first writ a basic auth function
+// we make a middleware 
+// with session insted of cookies
 
+
+// first you have to define the cofig for the session
+// you have to give a name
+// and a secret key this will be just kile cookie encryption
+app.use(session({
+  name: 'session-id',
+  secret: '12345-3432-34-23',
+  // this three things bellow will be explained later
+  saveUninitialized : false, // init the saving functionality
+  resave :false,        // if it is modified than dont modify 
+  store : new FileStore() // this will be the file based session not database
+}));
+
+// this is the middleware with session
 function auth(req,res,next){
-  // we need the authentication header 
-  // lets print it
-  // every request has a header 
-  console.log(req.headers);
-  var auth_header = req.headers.authorization; // this is the header call
-  if(!auth_header){
-      // if user does not provide auth
-      // we genareted an error for that
-    var err = new Error('You are not authenticated');
-    // and after that we give them the prompt 
-    // to authenticate
-    res.setHeader('WWW-Authenticate','Basic');
-    // this WWW Authenticate is a key word that is used for challenge before goinf any web page
-    err.status = 401;
-    // now pass the error if he dont do it
-    next(err);
-    return;
-  }
-  //now if he provide the username and password then
-  // extract the data
-  // buffer is used to take the data from the request
-  // and extract it
-  var auth = new Buffer.from(auth_header.split(' ')[1],'base64').toString().split(':');
-
-  /*
-  * it will take the auth header and split with a with respect to a space
-  * then it will  take the first one cause there is user and password in base64 encoding
-  * then we convert the base65 encoding with buffer and then split again with respect to ':'
-  * because it will separete the user name and password
-  * then we added to the variable  
-*/
-var user  = auth[0];
-var pass = auth[1];
-console.log(user);
-console.log(pass);
-if(user == 'admin' && pass== 'password'){
-  next(); // give permission to go to the route code
-}else{
-
-        // if user  provide incorrect  auth
-      // we genareted an error for that
+  console.log(req.session);
+  if(!req.session.user){
+    //check the header with authorization
+    var authHeader = req.headers.authorization;
+    if(!authHeader){
+      // if there is not auth headder give a error maggages 
+      // and challange the user
       var err = new Error('You are not authenticated');
-      // and after that we give them the prompt 
-      // to authenticate
-      res.setHeader('WWW-Authenticate','Basic');
-      // this WWW Authenticate is a key word that is used for challenge before goinf any web page
+      res.setHeader('WWW-Authenticate','basic');
       err.status = 401;
-      // now pass the error if he dont do it
       next(err);
       return;
 
+    }
+    // if there is a header then parse it
+    var auth = new Buffer.from(authHeader.split(' ')[1],'base64').toString().split(':'); 
+    // same process to parse the sesison and cookies
+    var user = auth[0];
+    var pass = auth[1];
+    if(user == 'admin' && pass=='password'){
+      req.session.user = 'admin'; // we found that user is admin and set it to the session
+      // and tell them to go further
+      next();
+    }else{
+      // other wise through and error
+      var err = new Error('Username and password wrong');
+      // challange the user again
+      res.setHeader('WWW-Authenticate','Basic');
+      err.status = 401;
+      next(err);
+
+    }
+
 }
+else{
+    // if there is session then check the session user 
+    // has proper user 
+    if(req.session.user === 'admin'){
+      console.log("session is ",req.session);
+    }else{
+      // if it not autherrize then
+      var err = new Error('Your credentials is incorrent');
+      err.status = 401;
+      next(err);
+    }
+  }
+
 }
+
+
+
+
+
 app.use(auth);
 
 
