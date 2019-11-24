@@ -67,3 +67,6 @@ different authentication
         ->sign() thats allow you to issuse and sign a token
 
         -> verify() this method is used for verify a web token 
+
+        we also the passoirtjwt to use the passport with the json webtoken
+        
