@@ -69,4 +69,7 @@ different authentication
         -> verify() this method is used for verify a web token 
 
         we also the passoirtjwt to use the passport with the json webtoken
+
+
+        passportjwd can parse th token from the header of the request and jwt take and than verify the data
         
