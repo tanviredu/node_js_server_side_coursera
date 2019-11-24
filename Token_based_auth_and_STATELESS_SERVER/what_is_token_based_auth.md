@@ -56,3 +56,14 @@ different authentication
         Signature{
             this part contain a signature which is a key that is used to decrypt and encrypt the json web token
         }
+
+        there is a package for handling the 
+        json web token which is
+
+        -> npm install jsonwebtoken --save
+
+        it provides several method
+
+        ->sign() thats allow you to issuse and sign a token
+
+        -> verify() this method is used for verify a web token 
