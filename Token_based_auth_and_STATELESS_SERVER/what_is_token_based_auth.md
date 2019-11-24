@@ -30,3 +30,29 @@ different authentication
             -> after the token is genereted and send it to the client after that all the request from the client will include this token
             -> server will validate the token and if it is considered as a valid token then the server respond to this token
             ->Json web token is a self contained(carry all the information it needs) and shareble and iEEE maintained web token that is used
+
+
+
+    what is inside in a json web token??
+    three things that is included in a web token
+        1) header
+        2) payload or the data
+        3) signature
+
+        what header contain
+        header{
+            1) algorithm for the encryption like HS256
+                which is a 256 bit encryption 
+            2) and than type of the  token 
+        }
+
+        payload{
+                _id : it helps you to identify the user
+                the user can search the database with the ID to find the required user
+
+                it can also the hold expiring date
+                but it is good to make this as small as possible 
+        }
+        Signature{
+            this part contain a signature which is a key that is used to decrypt and encrypt the json web token
+        }
