@@ -81,6 +81,9 @@ now we need to sort of migrate it
 then we need to do this command like
 
 Dishes.find({}).populate('comments.author')
+.then((err,dish)=>{
 
+    // do the work you want
+})
 
 it will select all the dishes and then search the comments for author and then when they find it and then it sech the user colum for the author with the id hat is provided and then add it to the comments
