@@ -9,7 +9,7 @@ actually you can not use foreign key in mongodb
 
 now thats brings a question
 
-then i i have a data in other column and i like to add a foreign key like sql database to other table how can ia do that
+then if i have a data in other column and i like to add a foreign key like sql database to other table how can ia do that
 
 or is this a good idea to not use the foreign key cause 
 otherwise there will be dulicate data
