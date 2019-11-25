@@ -4,7 +4,7 @@ or any foreign key or join query is not possible
 
 cause all the data is self contained means they have all the data that is needed you dont have to add foreign key
 
-actually you can use foreign key
+actually you can not use foreign key in mongodb
 
 
 now thats brings a question
