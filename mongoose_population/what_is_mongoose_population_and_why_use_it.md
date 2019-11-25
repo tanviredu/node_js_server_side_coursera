@@ -50,3 +50,24 @@ there is no problem with duplicate value in mongodb
 it is creatd this way
 
 try to avoid this if you can
+
+suppose you have a user schema and a comment schema
+and 
+
+in your comment schema you have the user column
+
+so you want to fill this column with user table
+
+you in the author column in the comments you need to add like this
+
+
+author{
+    type: mongoose.Schema.Types.objectID,
+    ref:'User'
+}
+
+and in the app you full the objectID with the author id
+
+then the mongoose population will search fetch and add the 
+the data to your comments
+
