@@ -9,7 +9,7 @@ actually you can not use foreign key in mongodb
 
 now thats brings a question
 
-then if i have a data in other column and i like to add a foreign key like sql database to other table how can ia do that
+then if i have a data in other column and i like to add a foreign key like sql database to other table how can i do that
 
 or is this a good idea to not use the foreign key cause 
 otherwise there will be dulicate data
@@ -17,7 +17,7 @@ otherwise there will be dulicate data
 well in monodb you can add like functionality like foreign key
 
 it cause mongoose population
-so if you user another schema connected to another
+so if you use another schema connected to another schema
 
 then in the schema you provide the id of it and and use
 mongoose population then it fetch the data from the other table and add it to our schema
@@ -28,7 +28,7 @@ cause it does not send you to other schema it manually goes and fetch and add
 
 so after all its just an operation of adding data from other schema
 
-but when you write the code it will give a feel about the foreign key and you can use it easy
+but when you write the code it will give a feel about the foreign key and you can use it easily
 
 but remember it mongodb does not made for foreign key
 
@@ -38,6 +38,8 @@ it have to search
 then find the data
 then import the data
 then add the data
+
+and the cycle have to be done for every document on that schema
 
 a lot of work done in the backend
 
