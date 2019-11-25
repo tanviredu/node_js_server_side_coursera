@@ -71,3 +71,16 @@ and in the app you full the objectID with the author id
 then the mongoose population will search fetch and add the 
 the data to your comments
 
+and how to do this ??
+
+
+suppose in the Dishes we added the author id in the comments
+
+now we need to sort of migrate it
+
+then we need to do this command like
+
+Dishes.find({}).populate('comments.author')
+
+
+it will select all the dishes and then search the comments for author and then when they find it and then it sech the user colum for the author with the id hat is provided and then add it to the comments
