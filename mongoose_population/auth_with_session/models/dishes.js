@@ -8,25 +8,26 @@ const Schema = mongoose.Schema;
 // make the database schema
 
 var commentSchema = new Schema({
-    rating:{
-        type:Number,
-        min:1,
-        max:5,
-        required:true,
+    rating:  {
+        type: Number,
+        min: 1,
+        max: 5,
+        required: true
     },
-    comment:{
-        type:String,
-        required:true
+    comment:  {
+        type: String,
+        required: true
     },
-    author:{
-        type:String,
-        required:true
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users'
+        // remember this has to be the name the name 
+        // thet you registered
+        // not the schema name
     }
-
-},{
-    timestamps:true
-})
-
+}, {
+    timestamps: true
+});
 
 
 var dishSchema = new Schema({

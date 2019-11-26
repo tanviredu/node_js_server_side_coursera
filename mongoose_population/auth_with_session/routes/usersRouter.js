@@ -21,31 +21,36 @@ var router = express.Router();
  *  for the app we using passport for this thing
  * */
 
-router.post('/signup',(req,res,next)=>{
-    // we insert the user with the register function
-    User.register(new User({username:req.body.username}),req.body.password,(err,user)=>{
-        // we take the user object and the passport value for the auth
-        /// if there is error
-        if(err){
-            res.statusCode = 500;
-            res.setHeader('Content-Type','application/json');
-            res.json({err:err})
-        }else{
-            // if there is no problem then use the passport authenticate function
-            // to authenticate it
-            passport.authenticate('local')(req,res,()=>{
-                res.statusCode = 200;
-                res.setHeader('Content-Type','application/json');
-                res.json({
-                    success:true,
-                    status:'Registration successfull'
-                });
-            });
+router.post('/signup', (req, res, next) => {
+  User.register(new User({username: req.body.username}), 
+    req.body.password, (err, user) => {
+    if(err) {
+      res.statusCode = 500;
+      res.setHeader('Content-Type', 'application/json');
+      res.json({err: err});
+    }
+    else {
+      if (req.body.firstname)
+        user.firstname = req.body.firstname;
+      if (req.body.lastname)
+        user.lastname = req.body.lastname;
+      user.save((err, user) => {
+        if (err) {
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.json({err: err});
+          return ;
         }
-
-
-    });
+        passport.authenticate('local')(req, res, () => {
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'application/json');
+          res.json({success: true, status: 'Registration Successful!'});
+        });
+      });
+    }
+  });
 });
+
 
 
 // inthe registration we did both registration and authenticate
