@@ -90,6 +90,9 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts,
                 // if you send false that means the user dont exists
                 return done(err,false);
             }else if(user){
+
+                // thats how you find the admin
+                console.log(user.admin);
                 return done(null,user);
             }else{
                 return done(null,false);
@@ -108,6 +111,7 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts,
 // because we are designing stateless server
 exports.verifyUser = passport.authenticate('jwt',{session:false})
 
+// here the admin goes
 
 
 
