@@ -12,16 +12,11 @@ var authenticate = require('../authenticate');
 // use the json response for the body parser
 
 
-// this is where i define the app
-// and it is the router
 var router = express.Router();
 
-/**
- *  we change the login and signup functionality
- *  for the app we using passport for this thing
- * */
 
-router.get('/',(req,res,next)=>{
+
+router.get('/',authenticate.verifyOrdinaryUser,authenticate.verifyAdmin,(req,res,next)=>{
   User.find({}).then((users)=>{
     res.statusCode = 200;
     res.setHeader('Content-Type','text/json');
@@ -62,59 +57,21 @@ router.post('/signup', (req, res, next) => {
 
 
 
-// inthe registration we did both registration and authenticate
-// in the login we do just authenticate this
-// route,middleware,respose
 
-
-// in the previous we use th session for login
-// but now if the user is authenticated 
-// we will give a token 
 router.post('/login',passport.authenticate('local'),(req,res)=>{
-  
-  // if the user is successfully authenticate the user
-  // we get the usr object
+
   var token = authenticate.getToken({_id:req.user.id}); // we create a object which is a user object but inside the user obj we only provide the -
-  // id cause thats allwe needed  
+
   res.statusCode = 200;
     res.setHeader('Content-Type','application/json');
     
-    //pass the token to the client
+ 
     res.json({
         success:true,
         status:'login successfull',
         token:token
     });
 });
-
-
-//*************VERY VERY IMPORTANT*******************//
- /*
- *  you may wonder why there is no else part
- * if the authenticate is not successfull then what you will do?
- * because if the authenticate is fauled then what we will do??
- * well the interesting that if the authenticate is successfull
- * then a variable
- * req.user
- * and
- * req.password
- *
- * variable will autometically store the user and password
- * if it is not successfull then this two variable will be empty
- * this will use in the main app.js
- * so we just search if the user and password is empty or nots
- *
-  */
-
-//***************************************************//
-
-
-
-
-
-
-
-
 
 
 
