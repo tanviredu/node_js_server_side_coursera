@@ -39,7 +39,7 @@ dishRouter.route('/')
 // when the post is called we add a middleware
 // this will be a barrier for the post
 // in the after the verify user the verify admin will start to work
-.post(authenticate.verifyUser,(req,res,next)=>{
+.post(authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=>{
     Dishes.create(req.body)
     .then((dish)=>{
         console.log("Dish is created",dish);

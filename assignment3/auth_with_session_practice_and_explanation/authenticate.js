@@ -91,7 +91,7 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts,
                 return done(err,false);
             }else if(user){
                  // thats how you find the admin
-                 console.log(user.admin);
+                 console.log("This is from the verify user"+user.admin);
                 return done(null,user);
             }else{
                 return done(null,false);
@@ -124,3 +124,28 @@ exports.verifyUser = passport.authenticate('jwt',{session:false})
 
 // and if we want to make the token to give the client
 // we use the getToken for that we export first
+
+
+
+//adding the middleware for ordinary user
+// first we test with the admin user only if it success full then we
+// use the both of thing
+exports.verifyAdmin = function(req,res,next){
+    // now we already found the user in the verufy User so
+    // we dont have to do much just fetch the admin flag and
+    //we are done
+
+    // verify user already have the information if the
+    // user admin or not
+    // to find the admin you just find if he an admin
+    // if admin then pass
+    // if not then dont pass
+    if(req.user.admin){
+        console.log("This is from the verifyAdmin "+req.user.admin);
+        next();
+    }else{
+        var err = new Error('sorry you are not admin');
+        err.status = 403;
+        return next(err);
+    }
+}
