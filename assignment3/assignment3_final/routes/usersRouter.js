@@ -21,6 +21,15 @@ var router = express.Router();
  *  for the app we using passport for this thing
  * */
 
+router.get('/',(req,res,next)=>{
+  User.find({}).then((users)=>{
+    res.statusCode = 200;
+    res.setHeader('Content-Type','text/json');
+    res.json(users);
+  })
+});
+
+
 router.post('/signup', (req, res, next) => {
   User.register(new User({username: req.body.username}), 
     req.body.password, (err, user) => {
@@ -127,13 +136,6 @@ router.get('/logout',(req,res)=>{
   }
 });
 
-router.get('/getalltheusers',(req,res,next)=>{
-    User.find({}).then((users)=>{
-      res.statusCode = 200;
-      res.setHeader('Content-Type','text/json');
-      res.json(users);
-    })
-});
 
 
 module.exports = router;
