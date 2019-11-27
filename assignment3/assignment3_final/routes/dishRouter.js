@@ -219,12 +219,21 @@ dishRouter.route('/:dishId/comments/:commentId')
 // you will not find the req.user so careful
 .put(authenticate.verifyOrdinaryUser, (req, res, next) => {
     
-    console.log(req.user._id); // so we got the user id
+    user_id=req.user._id; // so we got the user id
     
     Dishes.findById(req.params.dishId)
     .then((dish) => {
-        console.log(dish.comments.id(req.params.commentId).author)
-        if (dish != null && dish.comments.id(req.params.commentId) != null) {
+        comment_user_id=dish.comments.id(req.params.commentId).author;
+        /** little bit difficult but 
+         *  first we get the comment id for params
+         * then we search the comment id in the specfic dish
+         * then we got a specfic comment
+         * then we fetch the author Object id of the comment
+         * 
+         */
+
+
+        if (dish != null && dish.comments.id(req.params.commentId) != null && user_id===comment_user_id) {
             if (req.body.rating) {
                 dish.comments.id(req.params.commentId).rating = req.body.rating;
             }
@@ -247,6 +256,13 @@ dishRouter.route('/:dishId/comments/:commentId')
             err.status = 404;
             return next(err);
         }
+        else if (user_id != comment_user_id) {
+            err = new Error('You are not the owner of this comment');
+            err.status = 404;
+            return next(err);
+        }
+
+
         else {
             err = new Error('Comment ' + req.params.commentId + ' not found');
             err.status = 404;
@@ -255,10 +271,12 @@ dishRouter.route('/:dishId/comments/:commentId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete( (req, res, next) => {
+.delete( authenticate.verifyOrdinaryUser,(req, res, next) => {
+    user_id=req.user._id; // so we got the user id
     Dishes.findById(req.params.dishId)
     .then((dish) => {
-        if (dish != null && dish.comments.id(req.params.commentId) != null) {
+        comment_user_id=dish.comments.id(req.params.commentId).author;
+        if (dish != null && dish.comments.id(req.params.commentId) != null && user_id===comment_user_id) {
 
             dish.comments.id(req.params.commentId).remove();
             dish.save()
@@ -274,6 +292,11 @@ dishRouter.route('/:dishId/comments/:commentId')
         }
         else if (dish == null) {
             err = new Error('Dish ' + req.params.dishId + ' not found');
+            err.status = 404;
+            return next(err);
+        }
+        else if (user_id != comment_user_id) {
+            err = new Error('You are not the owner of this comment');
             err.status = 404;
             return next(err);
         }
