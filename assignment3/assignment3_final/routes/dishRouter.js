@@ -220,10 +220,12 @@ dishRouter.route('/:dishId/comments/:commentId')
 .put(authenticate.verifyOrdinaryUser, (req, res, next) => {
     
     user_id=req.user._id; // so we got the user id
-    
+    console.log(user_id);
     Dishes.findById(req.params.dishId)
     .then((dish) => {
-        comment_user_id=dish.comments.id(req.params.commentId).author;
+        comment_user_id=dish.comments.id(req.params.commentId).author._id;
+        console.log(comment_user_id);
+        
         /** little bit difficult but 
          *  first we get the comment id for params
          * then we search the comment id in the specfic dish
@@ -233,7 +235,7 @@ dishRouter.route('/:dishId/comments/:commentId')
          */
 
 
-        if (dish != null && dish.comments.id(req.params.commentId) != null && user_id===comment_user_id) {
+        if (dish != null && dish.comments.id(req.params.commentId) != null && user_id.equals(comment_user_id)) {
             if (req.body.rating) {
                 dish.comments.id(req.params.commentId).rating = req.body.rating;
             }
@@ -256,7 +258,7 @@ dishRouter.route('/:dishId/comments/:commentId')
             err.status = 404;
             return next(err);
         }
-        else if (user_id != comment_user_id) {
+        else if (!(user_id.equals(comment_user_id)) ){
             err = new Error('You are not the owner of this comment');
             err.status = 404;
             return next(err);
@@ -275,8 +277,8 @@ dishRouter.route('/:dishId/comments/:commentId')
     user_id=req.user._id; // so we got the user id
     Dishes.findById(req.params.dishId)
     .then((dish) => {
-        comment_user_id=dish.comments.id(req.params.commentId).author;
-        if (dish != null && dish.comments.id(req.params.commentId) != null && user_id===comment_user_id) {
+        comment_user_id=dish.comments.id(req.params.commentId).author._id;
+        if (dish != null && dish.comments.id(req.params.commentId) != null && user_id.equals(comment_user_id)) {
 
             dish.comments.id(req.params.commentId).remove();
             dish.save()
@@ -295,7 +297,7 @@ dishRouter.route('/:dishId/comments/:commentId')
             err.status = 404;
             return next(err);
         }
-        else if (user_id != comment_user_id) {
+        else if (!(user_id.equals(comment_user_id))) {
             err = new Error('You are not the owner of this comment');
             err.status = 404;
             return next(err);
@@ -309,7 +311,7 @@ dishRouter.route('/:dishId/comments/:commentId')
     .catch((err) => next(err));
 });
 
-// operation for individual comment in a individual dish
+
 
 
 
@@ -319,59 +321,3 @@ module.exports = dishRouter;
 
 
 
-
-
-// do it for the promoRouter and the leaderRouter too
-
-
-
-
-
-
-
-
-
-
-
-
-// with parameter
-
-
-
-// dishrouter.route('/:dishID')
-// .all((req,res,next)=>{
-//     res.statusCode = 200;
-//     res.setHeader('Content-Type','text/plain')
-//     next();
-
-
-// })
-
-// .get((req,res,next)=>{
-//     res.end("will send all the dishes to you " +req.params.dishID + " to you ");
-// })
-
-
-// .post((req,res,next)=>{
-//     //we will fetch data in this post request
-//     //but for now we just send and text
-//     res.end("will add the dishes " +req.body.name + " with details "+req.body.description);
-//     // we wills end it with postman
-// })
-
-// .put((req,res,next)=>{
-
-//     res.write("updating the dishes....")
-//     res.end("will update the dish "+req.params.dishID + "with details "+req.body.description);
-// })
-// .delete((req,res,next)=>{
-//     res.end("Delete all the "+req.params.dishID+" dishes");
-// });
-
-
-
-
-
-
-
-//module.exports = dishrouter;
