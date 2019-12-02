@@ -40,15 +40,9 @@ exports.verifyOrdinaryUser = passport.authenticate('jwt',{session:false})
 
 
 
-// remember you mast invoke this function
-// after the verify user
-// other wise it wil not work
+
 exports.verifyAdmin = function(req,res,next){
-    // verify admin function
-    // we got the user 
-    // in this function we just find that
-    // the user which is created is admin or not
-    // because admin is also a user [he is just privileged user]
+   
     if(req.user.admin){
         console.log("you are the admin you can pass");
         next();
