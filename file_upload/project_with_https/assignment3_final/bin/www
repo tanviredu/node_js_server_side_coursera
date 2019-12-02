@@ -1,0 +1,151 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('auth:server');
+var http = require('http');
+
+// we import the https module for the https
+// this is a core module
+var https = require('https');
+
+
+/**
+ * remember we done delete the http server we add the https
+ * and redirect the http to https so if any request comes
+ * from http it will be redirect to https
+ */
+
+
+
+
+// to read the certificate and the private key
+// we need the file system module
+
+var fs = require('fs');
+
+
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+
+// we use the port 3443 we dont use the reserved port 
+// for https the reverse port is 433
+app.set('secPort',port+443)
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+
+
+// we need to configure some option to configure the https
+//readFileSync will read the file synchroniously that will
+//read th whole file
+//__dirname() is used for current directory
+var options = {
+
+
+  key:fs.readFileSync(__dirname+'/private.key'),
+  cert:fs.readFileSync(__dirname+'/certificate.pem')
+};
+
+// configure the secure server
+
+var secureServer = https.createServer(options,app);
+
+
+//from the set we get the value with get
+secureServer.listen(app.get('secPort'),()=>{
+
+  console.log('secureServer listening on port', app.get('secPort'));
+  //we can configure error here but there is another way of that
+  // we configure the error later
+});
+
+secureServer.on('err',onError); //why onError ? cause there isa catch function ny express 
+                                // at the end to catch the error
+
+secureServer.on('listening',onListening);
+
+// secure server port configuring finished
+// now go to the app.js and redirect the unsecure to secure
+
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
