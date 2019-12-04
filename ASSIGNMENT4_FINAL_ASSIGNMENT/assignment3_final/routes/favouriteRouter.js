@@ -21,7 +21,7 @@ favouriteRouter.route('/')
      you can just import all
      because there may be user who dont post favorate dish at all
     */
-
+    
 
     /* remember when we populate the comment schema in dish databse
         we wrote the comment.author
@@ -57,6 +57,7 @@ favouriteRouter.route('/')
     // ind the user
     // find in the Favourate but it will search the user database
     // with the help of thr reference
+    console.log(req.params);
     Favourite.find({'postedUser':req.user._id},(err,favourites)=>{
         // you search the favourates with user id
         // but you dont add it to the body cause
@@ -153,7 +154,130 @@ favouriteRouter.route('/')
         }
     })
 });
+
+
+// now post for specfic favdish 
+// and delete for specfic favdish
+
+favouriteRouter.route('/:dishid')
+.post(cors.cors,authenticate.verifyOrdinaryUser,(req,res,next)=>{
+
+    console.log(req.params.dishid);
+    console.log(req.user._id);
+    Favourite.find({'postedUser':req.user._id},(err,favourites)=>{
+
+        req.body.postedUser = req.user._id;
+
+        if(favourites.length){
+            
+   
+
+            if(favourites[0].favdishes.length){
+  
+                for (var i=(favourites[0].favdishes.length -1);i>=0;i--){
+                    if(favourites[0].favdishes[i]==req.params.dishid){
+                        dish_id__already_exists = true;
+                        console.log('dishes already exists');
+                        break;
+                    }
+                }
+                if(!dish_id__already_exists){
+
+                    favourites[0].favdishes.push(req.params.dishid);
+                    favourites[0].save((err,favourite)=>{
+                        if(err){
+                            throw err;
+                        }
+                        else{
+                             res.json(favourite);
+                        }
+                    })
+                }
+            }
+        
+
+        
+        }
+        else{
+
+            Favourite.create({postedUser:req.body.postedUser},(err,favourite)=>{
+                if(err) throw err;
+                console.log("user created");
+                console.log(req.params.dishid);
+                favourite.favdishes.push(req.params.dishid);
+                favourite.save((err,favourite)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        res.json(favourite);
+                    }
+                })
+            })
+        }
+        
+
+
+   
+   
+    })
+   
     
 
+    })
 
+.delete(cors.cors,authenticate.verifyOrdinaryUser,(req,res,next)=>{
+    
+        
+        Favourite.find({'postedUser':req.user._id},(err,favourites)=>{
+    
+            req.body.postedUser = req.user._id;
+
+            if(favourites.length){
+                         
+       
+    
+                if(favourites[0].favdishes.length){
+                   //console.log(favourites[0].favdishes.length);
+ 
+                    for (var i=(favourites[0].favdishes.length);i>=0;i--){
+                        
+                        if(favourites[0].favdishes[i]==req.params.dishid){
+                            console.log('found it');
+                            dish_id__already_exists = true;
+                            // so exists now delete it
+                            favourites[0].favdishes.remove(req.params.dishid);
+                            favourites[0].save((err,favourite)=>{
+                                if(err){
+                                    throw err;
+                                }else{
+                                    res.json(favourite);
+                                }
+                            })
+                        }
+                    }
+                    // if not exists
+                    if(!dish_id__already_exists){
+    
+                        console.log('dish id does not exist in favourate list');
+                    }
+                }
+            
+    
+            
+            }
+            else{
+                console.log('No favourite');
+                res.json(favourites);
+                
+            }
+            
+    
+    
+       
+       
+        })
+       
+        
+    
+        })
 module.exports = favouriteRouter;
